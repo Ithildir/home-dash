@@ -1,10 +1,19 @@
 FROM balenalib/raspberrypi3-python:3.7-latest-build
 
-RUN install_packages python3-numpy python3-pil python3-setuptools python3-influxdb python3-rpi.gpio python3-smbus
+RUN install_packages \
+	python3-influxdb \
+	python3-numpy \
+	python3-pil \
+	python3-rpi.gpio \
+	python3-setuptools \
+	python3-smbus
+
 RUN pip install enviroplus
 
 WORKDIR /usr/src/app
 
-COPY weather.py .
+ENV ROOM living
 
-CMD ["python", "weather.py"]
+COPY enviro.py .
+
+CMD ["python", "enviro.py"]
