@@ -1,0 +1,17 @@
+version: '2.1'
+volumes:
+  resin-data: {}
+services:
+  enviro:
+    build: ./enviro
+    privileged: true
+    restart: always
+    network_mode: host
+    volumes:
+      - 'resin-data:/data'
+    labels:
+      io.resin.features.dbus: '1'
+      io.resin.features.firmware: '1'
+      io.resin.features.kernel-modules: '1'
+      io.resin.features.resin-api: '1'
+      io.resin.features.supervisor-api: '1'
