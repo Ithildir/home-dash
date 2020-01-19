@@ -1,9 +1,10 @@
-import time
 import os
+import time
+
 from bme280 import BME280
 from influxdb import InfluxDBClient, SeriesHelper
-from smbus import SMBus
 from pms5003 import PMS5003, ReadTimeoutError
+from smbus import SMBus
 
 ROOM = os.getenv("ROOM")
 
