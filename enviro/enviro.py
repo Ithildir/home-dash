@@ -2,6 +2,7 @@ import os
 import time
 
 from bme280 import BME280
+from enviroplus import gas
 from influxdb import InfluxDBClient, SeriesHelper
 from pms5003 import PMS5003, ReadTimeoutError
 from smbus import SMBus
@@ -25,7 +26,17 @@ class EnviroHelper(SeriesHelper):
     class Meta:
         client = influxClient
         series_name = "enviro"
-        fields = ["pm1", "pm2_5", "pm10", "humidity", "pressure", "temperature"]
+        fields = [
+            "humidity",
+            "nh3",
+            "oxidising",
+            "pm1",
+            "pm10",
+            "pm2_5",
+            "pressure",
+            "reducing",
+            "temperature",
+        ]
         tags = ["room"]
         bulk_size = 5
         autocommit = True
@@ -36,22 +47,27 @@ while True:
     valPressure = bme280.get_pressure()
     valTemperature = bme280.get_temperature()
 
+    gasReadings = gas.read_all()
+
     try:
-        readings = pms5003.read()
+        pmReadings = pms5003.read()
     except ReadTimeoutError:
         pms5003 = PMS5003()
 
-    valPM1 = readings.pm_ug_per_m3(1.0)
-    valPM2_5 = readings.pm_ug_per_m3(2.5)
-    valPM10 = readings.pm_ug_per_m3(10)
+    valPM1 = pmReadings.pm_ug_per_m3(1.0)
+    valPM2_5 = pmReadings.pm_ug_per_m3(2.5)
+    valPM10 = pmReadings.pm_ug_per_m3(10)
 
     EnviroHelper(
         room=ROOM,
         humidity=valHumidity,
+        nh3=gasReadings.nh3,
+        oxidising=gasReadings.oxidising,
         pm1=valPM1,
         pm10=valPM10,
         pm2_5=valPM2_5,
         pressure=valPressure,
+        reducing=gasReadings.reducing,
         temperature=valTemperature,
     )
 
