@@ -1,0 +1,22 @@
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - uses: bulv1ne/python-style-check@master
+
+  deploy:
+    needs: lint
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - name: Balena Push
+      uses: theaccordance/balena-push@v1
+      with:
+        api-token: ${{ secrets.BALENA_API_TOKEN }}
+        application-name: home-dash
