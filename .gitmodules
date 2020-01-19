@@ -1,0 +1,3 @@
+[submodule "wpe"]
+	path = wpe
+	url = https://github.com/balenalabs/balena-wpe
