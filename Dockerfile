@@ -12,8 +12,6 @@ RUN pip install enviroplus
 
 WORKDIR /usr/src/app
 
-ENV ROOM living
-
 COPY enviro.py .
 
 CMD ["python", "enviro.py"]
