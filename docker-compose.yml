@@ -1,14 +1,10 @@
 version: '2.1'
-volumes:
-  resin-data: {}
 services:
   enviro:
     build: ./enviro
+    network_mode: host
     privileged: true
     restart: always
-    network_mode: host
-    volumes:
-      - 'resin-data:/data'
     labels:
       io.resin.features.dbus: '1'
       io.resin.features.firmware: '1'
