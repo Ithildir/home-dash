@@ -1,8 +1,6 @@
-import logging
 import os
 import time
 
-import requests
 from bme280 import BME280
 from enviroplus import gas
 from influxdb import InfluxDBClient, SeriesHelper
@@ -44,34 +42,6 @@ class EnviroHelper(SeriesHelper):
         autocommit = True
 
 
-def get_serial_number():
-    with open("/proc/device-tree/serial-number", "r") as f:
-        return f.read()
-
-
-def send_to_luftdaten(pin, values):
-    res = requests.post(
-        "https://api.luftdaten.info/v1/push-sensor-data/",
-        headers={
-            "Cache-Control": "no-cache",
-            "Content-Type": "application/json",
-            "X-PIN": str(pin),
-            "X-Sensor": sensor_uid,
-        },
-        json={
-            "sensordatavalues": [
-                {"value_type": key, "value": val} for key, val in values.items()
-            ],
-            "software_version": "enviro-plus 0.0.1",
-        },
-    )
-
-    if not res.ok:
-        logging.warn(res.text)
-
-
-sensor_uid = f"raspi-{get_serial_number()}"
-
 while True:
     val_humidity = bme280.get_humidity()
     val_pressure = bme280.get_pressure()
@@ -100,7 +70,5 @@ while True:
         reducing=gas_readings.reducing,
         temperature=val_temperature,
     )
-
-    send_to_luftdaten(1, {"P1": val_pm10, "P2": val_pm_2_5})
 
     time.sleep(1)
