@@ -13,7 +13,7 @@ bus = SMBus(1)
 bme280 = BME280(i2c_dev=bus)
 pms5003 = PMS5003()
 
-influxClient = InfluxDBClient(
+influx_client = InfluxDBClient(
     host=os.getenv("INFLUX_HOST"),
     port=int(os.getenv("INFLUX_PORT", "8086")),
     username=os.getenv("INFLUX_USER", "enviro"),
@@ -24,7 +24,7 @@ influxClient = InfluxDBClient(
 
 class EnviroHelper(SeriesHelper):
     class Meta:
-        client = influxClient
+        client = influx_client
         series_name = "enviro"
         fields = [
             "humidity",
@@ -43,32 +43,32 @@ class EnviroHelper(SeriesHelper):
 
 
 while True:
-    valHumidity = bme280.get_humidity()
-    valPressure = bme280.get_pressure()
-    valTemperature = bme280.get_temperature()
+    val_humidity = bme280.get_humidity()
+    val_pressure = bme280.get_pressure()
+    val_temperature = bme280.get_temperature()
 
-    gasReadings = gas.read_all()
+    gas_readings = gas.read_all()
 
     try:
-        pmReadings = pms5003.read()
+        pm_readings = pms5003.read()
     except ReadTimeoutError:
         pms5003 = PMS5003()
 
-    valPM1 = pmReadings.pm_ug_per_m3(1.0)
-    valPM2_5 = pmReadings.pm_ug_per_m3(2.5)
-    valPM10 = pmReadings.pm_ug_per_m3(10)
+    val_pm1 = pm_readings.pm_ug_per_m3(1.0)
+    val_pm_2_5 = pm_readings.pm_ug_per_m3(2.5)
+    val_pm10 = pm_readings.pm_ug_per_m3(10)
 
     EnviroHelper(
         room=ROOM,
-        humidity=valHumidity,
-        nh3=gasReadings.nh3,
-        oxidising=gasReadings.oxidising,
-        pm1=valPM1,
-        pm10=valPM10,
-        pm2_5=valPM2_5,
-        pressure=valPressure,
-        reducing=gasReadings.reducing,
-        temperature=valTemperature,
+        humidity=val_humidity,
+        nh3=gas_readings.nh3,
+        oxidising=gas_readings.oxidising,
+        pm1=val_pm1,
+        pm10=val_pm10,
+        pm2_5=val_pm_2_5,
+        pressure=val_pressure,
+        reducing=gas_readings.reducing,
+        temperature=val_temperature,
     )
 
     time.sleep(1)

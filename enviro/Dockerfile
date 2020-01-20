@@ -4,6 +4,7 @@ RUN install_packages \
 	python3-influxdb \
 	python3-numpy \
 	python3-pil \
+	python3-requests \
 	python3-rpi.gpio \
 	python3-setuptools \
 	python3-smbus
