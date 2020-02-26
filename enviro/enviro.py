@@ -42,6 +42,8 @@ class EnviroHelper(SeriesHelper):
         autocommit = True
 
 
+next_sample_time = time.time()
+
 while True:
     val_humidity = bme280.get_humidity()
     val_pressure = bme280.get_pressure()
@@ -71,4 +73,6 @@ while True:
         temperature=val_temperature,
     )
 
-    time.sleep(1)
+    next_sample_time += 1
+    sleep_duration = max(next_sample_time - time.time(), 0)
+    time.sleep(sleep_duration)
