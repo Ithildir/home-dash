@@ -55,6 +55,7 @@ while True:
         pm_readings = pms5003.read()
     except ReadTimeoutError:
         pms5003 = PMS5003()
+        pm_readings = pms5003.read()
 
     val_pm1 = pm_readings.pm_ug_per_m3(1.0)
     val_pm_2_5 = pm_readings.pm_ug_per_m3(2.5)
