@@ -73,6 +73,8 @@ while True:
         temperature=val_temperature,
     )
 
+    print(f"Correctly sent metrics for {ROOM}")
+
     next_sample_time += 1
     sleep_duration = max(next_sample_time - time.time(), 0)
     time.sleep(sleep_duration)
