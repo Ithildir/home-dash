@@ -11,8 +11,3 @@ services:
       io.resin.features.kernel-modules: '1'
       io.resin.features.resin-api: '1'
       io.resin.features.supervisor-api: '1'
-  wpe:
-    build: ./wpe
-    network_mode: host
-    privileged: true
-    restart: always
