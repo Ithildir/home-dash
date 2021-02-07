@@ -1,3 +1,6 @@
+[submodule "enviro/enviroplus_exporter"]
+	path = enviro/enviroplus_exporter
+	url = https://github.com/tijmenvandenbrink/enviroplus_exporter
 [submodule "wpe"]
 	path = wpe
 	url = https://github.com/balenalabs/balena-wpe
