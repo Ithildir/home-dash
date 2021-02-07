@@ -10,7 +10,7 @@ jobs:
     - uses: bulv1ne/python-style-check@master
 
   deploy:
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/master'
     needs: lint
     runs-on: ubuntu-latest
     steps:
