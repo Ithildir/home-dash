@@ -16,9 +16,9 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Checkout Submodules
-      uses: textbook/git-checkout-submodule-action@2.0.0
+      uses: textbook/git-checkout-submodule-action@2
     - name: Balena Push
-      uses: theaccordance/balena-push@v1.0.0
+      uses: amingilani/push-to-balenacloud@v1
       with:
         api-token: ${{ secrets.BALENA_API_TOKEN }}
         application-name: home-dash
