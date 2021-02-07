@@ -1,22 +1,11 @@
-FROM balenalib/raspberrypi3-python:3.7-latest-build
+FROM sighmon/balena-enviro-plus:v1
 
-RUN pip3 install \
-	enviroplus \
-	requests \
-	spidev \
-	RPi.GPIO
+WORKDIR /usr/src
 
-RUN install_packages \
-	libatlas-base-dev \
-	python3-dev \
-	python3-influxdb \
-	python3-numpy \
-	python3-pil \
-	python3-setuptools \
-	python3-smbus
+RUN sudo pip3 install \
+	influxdb-client \
+	prometheus_client
 
-WORKDIR /usr/src/app
+COPY enviroplus_exporter/enviroplus_exporter.py enviroplus_exporter.py
 
-COPY enviro.py .
-
-CMD ["python", "enviro.py"]
+CMD ["python3", "enviroplus_exporter.py", "--factor", "2.25", "--influxdb", "true"]
