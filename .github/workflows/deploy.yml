@@ -1,17 +1,10 @@
-name: CI
-
-on: push
+on:
+  push:
+    branches:
+      - master
 
 jobs:
-  lint:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-    - uses: bulv1ne/python-style-check@master
-
   deploy:
-    if: github.ref == 'refs/heads/master'
-    needs: lint
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
