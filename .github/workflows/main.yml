@@ -1,9 +1,6 @@
 name: CI
 
-on:
-  push:
-    branches:
-      - master
+on: push
 
 jobs:
   lint:
@@ -13,6 +10,7 @@ jobs:
     - uses: bulv1ne/python-style-check@master
 
   deploy:
+    if: github.ref == 'refs/heads/main'
     needs: lint
     runs-on: ubuntu-latest
     steps:
